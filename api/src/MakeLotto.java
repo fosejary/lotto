@@ -244,11 +244,12 @@ public class MakeLotto {
 
         if (exFilter35()) return true; //단번대~20번대 5수 출현 제거
 //
-//        if (exFilter36()) return true; //십/이십대 6수 제거
-//        if (exFilter37()) return true; //십/삼십대 6수 제거
-//        if (exFilter38()) return true; //십/사십대 6수 제거
-//
-//        if (exFilter39()) return true; //이십대/삼십대 6수 제거
+        if (exFilter36()) return true; //매직그룹 필터
+
+        if (exFilter37()) return true; //해외로또수 1회출 번호 필터
+        if (exFilter38()) return true; //해외로또수 2회출 번호 필터
+        if (exFilter39()) return true; //해외로또수 필출 구간 (벨기에, 스위스, 이스라엘)
+
 //        if (exFilter40()) return true; //이십대/사십대 6수 제거
 //
 //        if (exFilter41()) return true; //삼십대/사십대 6수 제거
@@ -1227,8 +1228,10 @@ public class MakeLotto {
     private boolean exFilter36() {
         int checkCount = 0;
         int[] numbers = {
-                11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                21, 22, 23, 24, 25, 26, 27, 28, 29, 30
+                41, 42, 43,
+                34, 35, 36,
+                10, 11, 12, 31, 32, 33,
+                19, 20, 21, 43, 44, 45
         };
 
         for (int no : currentLottoArr) {
@@ -1238,14 +1241,13 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 6;
+        return checkCount > 4 || checkCount == 0;
     }
 
     private boolean exFilter37() {
         int checkCount = 0;
         int[] numbers = {
-                11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                31, 32, 33, 34, 35, 36, 37, 38, 39, 40
+                3, 6, 14, 18, 21, 24, 28, 38, 39, 40, 41, 42, 43, 45
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1260,8 +1262,7 @@ public class MakeLotto {
     private boolean exFilter38() {
         int checkCount = 0;
         int[] numbers = {
-                11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                41, 42, 43, 44, 45
+                1, 2, 4, 7, 10, 11, 17, 19, 20, 25, 30, 31, 34, 36, 44
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1276,8 +1277,7 @@ public class MakeLotto {
     private boolean exFilter39() {
         int checkCount = 0;
         int[] numbers = {
-                21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-                31, 32, 33, 34, 35, 36, 37, 38, 39, 40
+                4, 6, 11, 12, 13, 19, 25, 27, 31, 34, 35, 38, 39, 40, 43, 44, 45
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1286,7 +1286,7 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 6;
+        return checkCount == 0;
     }
 
     private boolean exFilter40() {
@@ -2050,22 +2050,22 @@ public class MakeLotto {
         }
         if (group == 0) {
             // A 그룹
-            return checkCount > 5;
+            return checkCount > 4 || checkCount == 0;
         } else if (group == 1) {
             // B 그룹
-            return checkCount > 5;
+            return checkCount > 4 || checkCount == 0;
         } else if (group == 2) {
             // C 그룹
-            return checkCount > 5;
+            return checkCount > 4 || checkCount == 0;
         } else if (group == 3) {
             // 1 구간
-            return checkCount > 5;
+            return checkCount > 4;
         } else if (group == 4) {
             // 2 구간
-            return checkCount > 5;
+            return checkCount > 4;
         } else if (group == 5) {
             // 3 구간
-            return checkCount > 5;
+            return checkCount > 4;
         } else {
             return checkCount == 0 || checkCount == 6;
             // A + C 그룹 끝
@@ -2326,42 +2326,6 @@ public class MakeLotto {
 
     private boolean startNumberFilter(int startNumber) {
         return currentLottoArr.get(0) > startNumber;
-    }
-
-    private boolean checkHasNoDisplayOver10Count(int minCount, int maxCount, boolean between) {
-        int checkCount = 0;
-        Set<Integer> nonDupNumberSet = new TreeSet<>();
-        ArrayList<Integer> base45Number = new ArrayList<>();
-        for (int i = 1; i <= 45; i++) {
-            base45Number.add(i);
-        }
-        for (int i = 0; i < previousNumbersArr.length; i++) {
-            for (int j = 0; j < previousNumbersArr[i].length - 1; j++) {
-                nonDupNumberSet.add(previousNumbersArr[i][j]);
-            }
-        }
-        for (int n : nonDupNumberSet) {
-            base45Number.set((n - 1), 0);
-        }
-        Set<Integer> nonDupNumberSetResult = new TreeSet<>(base45Number);
-        nonDupNumberSetResult.remove(0);
-        noShowNumberSet.addAll(nonDupNumberSetResult);
-        for (int no : currentLottoArr) {
-            for (int dup : nonDupNumberSetResult) {
-                if (no == dup) {
-                    checkCount++;
-                }
-            }
-        }
-        if (between) {
-            if (checkCount >= minCount && checkCount <= maxCount) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return checkCount > maxCount;
-        }
     }
 
     private boolean checkFixNumbers(ArrayList<Integer> fixNumbers) {

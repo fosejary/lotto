@@ -26,24 +26,8 @@ public class main {
         };
         ArrayList<Integer> arrList = new ArrayList<>(Arrays.asList(arr));
 
-        /*
-         * 10,20,30,40
-         * 11,21,31,41
-         * 12,22,32,42 - 12
-         * 3,23,33 - 15
-         * 4,14,24,44 - 19
-         * 5,15,35,45 - 23
-         * 16,26 - 25
-         * 7,17,27,37 - 29
-         * 8,18,38 - 32
-         * 9,19,39 - 35
-         *
-         * 제외: 1, 2, 13, 34, 25, 6, 36, 28, 29
-         * */
-        //2,7,9,16,37
-
         //제외수 10 11 20 21 25 41
-        arrList.remove(Integer.valueOf(1)); //출현그룹표 약함
+//        arrList.remove(Integer.valueOf(1)); //출현그룹표 약함
         arrList.remove(Integer.valueOf(2));
 //        arrList.remove(Integer.valueOf(3));
         arrList.remove(Integer.valueOf(4)); //보너스 끝수
@@ -68,8 +52,8 @@ public class main {
 //        arrList.remove(Integer.valueOf(23));
         arrList.remove(Integer.valueOf(24)); //보너스 끝수 //출현그룹표 약함
 //        arrList.remove(Integer.valueOf(25)); //10회차 직전 위치 //출현그룹표 약함
-        arrList.remove(Integer.valueOf(26));
-        arrList.remove(Integer.valueOf(27));
+//        arrList.remove(Integer.valueOf(26));
+//        arrList.remove(Integer.valueOf(27));
 //        arrList.remove(Integer.valueOf(28)); //4주 이내 2회 출현
 //        arrList.remove(Integer.valueOf(29)); //출현그룹표 약함
 //        arrList.remove(Integer.valueOf(30));
