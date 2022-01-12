@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class main {
 
@@ -28,16 +26,16 @@ public class main {
 
         //제외수 10 11 20 21 25 41
 //        arrList.remove(Integer.valueOf(1)); //출현그룹표 약함
-        arrList.remove(Integer.valueOf(2));
+//        arrList.remove(Integer.valueOf(2));
 //        arrList.remove(Integer.valueOf(3));
         arrList.remove(Integer.valueOf(4)); //보너스 끝수
 //        arrList.remove(Integer.valueOf(5));
 //        arrList.remove(Integer.valueOf(6)); //4주 이내 2회 출현 //출현그룹표 약함
-//        arrList.remove(Integer.valueOf(7));
+        arrList.remove(Integer.valueOf(7));
 //        arrList.remove(Integer.valueOf(8));
 //        arrList.remove(Integer.valueOf(9));
 //        arrList.remove(Integer.valueOf(10));
-//        arrList.remove(Integer.valueOf(11)); //10회차 직전 위치
+        arrList.remove(Integer.valueOf(11)); //10회차 직전 위치
 //        arrList.remove(Integer.valueOf(12));
         arrList.remove(Integer.valueOf(13));
 //        arrList.remove(Integer.valueOf(14)); //보너스 끝수
@@ -63,14 +61,14 @@ public class main {
 //        arrList.remove(Integer.valueOf(34)); //보너스 끝수 //4주 이내 2회 출현
 //        arrList.remove(Integer.valueOf(35));
 //        arrList.remove(Integer.valueOf(36)); //4주 이내 2회 출현 //출현그룹표 약함
-        arrList.remove(Integer.valueOf(37));
+//        arrList.remove(Integer.valueOf(37));
 //        arrList.remove(Integer.valueOf(38));
         arrList.remove(Integer.valueOf(39));
 //        arrList.remove(Integer.valueOf(40));
 //        arrList.remove(Integer.valueOf(41));
 //        arrList.remove(Integer.valueOf(42));
 //        arrList.remove(Integer.valueOf(43)); //4주 이내 2회 출현
-//        arrList.remove(Integer.valueOf(44)); //보너스 끝수
+        arrList.remove(Integer.valueOf(44)); //보너스 끝수
 //        arrList.remove(Integer.valueOf(45));
 
         System.out.println(arrList);
@@ -82,79 +80,6 @@ public class main {
 
         ArrayList<ArrayList<Integer>> combList = combination.getGenArrList();
         ArrayList<ArrayList<Integer>> allNumberList = new ArrayList<>();
-
-//        Connection con = null;
-//        PreparedStatement st = null;
-//
-//        try {
-//
-//            System.out.println("db select");
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            con = DriverManager.getConnection("jdbc:mysql://fosejary.cafe24.com:3306?serverTimezone=UTC", "fosejary", "Rladudrl8544");
-//            StringBuilder sqlBuiler = new StringBuilder();
-//            sqlBuiler.append("select id, no1, no2, no3, no4, no5, no6 from fosejary.lottoAllNumber\n")
-//                    .append("where ac in (7,9,10)\n")
-//                    .append("and win1 is null and win2 is null and win3 is null\n");
-//
-//            List<Integer> removeNumberList = new ArrayList<>();
-//
-//            removeNumberList.add(4);
-//            removeNumberList.add(12);
-//            removeNumberList.add(29);
-//            removeNumberList.add(35);
-//
-//            int loopCnt = 0;
-//            for (Integer removeNumber : removeNumberList) {
-//                sqlBuiler.append("and (")
-//                        .append("no1 != ").append(removeNumber)
-//                        .append(" and no2 != ").append(removeNumber)
-//                        .append(" and no3 != ").append(removeNumber)
-//                        .append(" and no4 != ").append(removeNumber)
-//                        .append(" and no5 != ").append(removeNumber)
-//                        .append(" and no6 != ").append(removeNumber)
-//                        .append(")");
-//                if (loopCnt < removeNumberList.size()) {
-//                    sqlBuiler.append("\n");
-//                }
-//                loopCnt++;
-//            }
-//
-//            String sql = sqlBuiler.toString();
-//            System.out.println(sql);
-//            ResultSet rs;
-//            st = con.prepareStatement(sql);
-//            rs = st.executeQuery(sql);
-//
-//            while (rs.next()) {
-//                ArrayList<Integer> numbers = new ArrayList<>();
-//                numbers.add(rs.getInt("no1"));
-//                numbers.add(rs.getInt("no2"));
-//                numbers.add(rs.getInt("no3"));
-//                numbers.add(rs.getInt("no4"));
-//                numbers.add(rs.getInt("no5"));
-//                numbers.add(rs.getInt("no6"));
-//                allNumberList.add(numbers);
-//            }
-//            System.out.println("all number list create is done.");
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (st != null) {
-//                try {
-//                    st.close();
-//                } catch (SQLException se) {
-//                    se.printStackTrace();
-//                }
-//            }
-//            if (con != null) {
-//                try {
-//                    con.close();
-//                } catch (SQLException se) {
-//                    se.printStackTrace();
-//                }
-//            }
-//        }
 
         ArrayList<ArrayList<Integer>> resultList = new ArrayList<>();
         MakeLotto lotto = new MakeLotto();
@@ -177,7 +102,7 @@ public class main {
             count++;
         }
 
-        ArrayList mainRandomList = new ArrayList();
+        ArrayList<ArrayList<Integer>> mainRandomList = new ArrayList<>();
         Random ra = new Random();
         int mainSize = resultList.size(); //사이즈 따로 구해서
         for (int i = 0; i < mainSize; i++) {
@@ -186,14 +111,26 @@ public class main {
             resultList.remove(rv);
         }
 
-        for (int i = 0; i < 10; i++) {
-            System.out.println(mainRandomList.get(i));
+        for (int i = 0; i < 100; i++) {
+            System.out.println(mainRandomList.get(i) + " - (AC: " + calcArithmeticComplexCount(mainRandomList.get(i)) + ")");
         }
 
         System.out.println("* 조합 대상 번호 개수: " + arrList.size());
         System.out.println("* 조합수: " + orgMakeNumberCount);
         System.out.println("******************** [로또 번호 분석 알고리즘 종료] ********************");
 
+    }
+
+    private static int calcArithmeticComplexCount(ArrayList<Integer> list) {
+        int ac = 0;
+        Set<Integer> complexSet = new TreeSet<>();
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = i + 1; j < list.size(); j++) {
+                complexSet.add((list.get(j) - list.get(i)));
+            }
+            ac = complexSet.size() - (list.size() - 1);
+        }
+        return ac;
     }
 
 }
