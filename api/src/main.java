@@ -28,21 +28,21 @@ public class main {
 //        arrList.remove(Integer.valueOf(1)); //출현그룹표 약함
 //        arrList.remove(Integer.valueOf(2));
 //        arrList.remove(Integer.valueOf(3));
-        arrList.remove(Integer.valueOf(4)); //보너스 끝수
+//        arrList.remove(Integer.valueOf(4)); //보너스 끝수
 //        arrList.remove(Integer.valueOf(5));
-//        arrList.remove(Integer.valueOf(6)); //4주 이내 2회 출현 //출현그룹표 약함
-        arrList.remove(Integer.valueOf(7));
+        arrList.remove(Integer.valueOf(6)); //4주 이내 2회 출현 //출현그룹표 약함
+//        arrList.remove(Integer.valueOf(7));
 //        arrList.remove(Integer.valueOf(8));
 //        arrList.remove(Integer.valueOf(9));
 //        arrList.remove(Integer.valueOf(10));
-        arrList.remove(Integer.valueOf(11)); //10회차 직전 위치
+//        arrList.remove(Integer.valueOf(11)); //10회차 직전 위치
 //        arrList.remove(Integer.valueOf(12));
-        arrList.remove(Integer.valueOf(13));
+//        arrList.remove(Integer.valueOf(13));
 //        arrList.remove(Integer.valueOf(14)); //보너스 끝수
 //        arrList.remove(Integer.valueOf(15));
 //        arrList.remove(Integer.valueOf(16));
 //        arrList.remove(Integer.valueOf(17));
-//        arrList.remove(Integer.valueOf(18));
+        arrList.remove(Integer.valueOf(18));
 //        arrList.remove(Integer.valueOf(19)); //10회차 직전 위치
 //        arrList.remove(Integer.valueOf(20));
 //        arrList.remove(Integer.valueOf(21));
@@ -63,12 +63,12 @@ public class main {
 //        arrList.remove(Integer.valueOf(36)); //4주 이내 2회 출현 //출현그룹표 약함
 //        arrList.remove(Integer.valueOf(37));
 //        arrList.remove(Integer.valueOf(38));
-        arrList.remove(Integer.valueOf(39));
+//        arrList.remove(Integer.valueOf(39));
 //        arrList.remove(Integer.valueOf(40));
 //        arrList.remove(Integer.valueOf(41));
 //        arrList.remove(Integer.valueOf(42));
 //        arrList.remove(Integer.valueOf(43)); //4주 이내 2회 출현
-        arrList.remove(Integer.valueOf(44)); //보너스 끝수
+//        arrList.remove(Integer.valueOf(44)); //보너스 끝수
 //        arrList.remove(Integer.valueOf(45));
 
         System.out.println(arrList);
@@ -111,7 +111,7 @@ public class main {
             resultList.remove(rv);
         }
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 20; i++) {
             System.out.println(mainRandomList.get(i) + " - (AC: " + calcArithmeticComplexCount(mainRandomList.get(i)) + ")");
         }
 
