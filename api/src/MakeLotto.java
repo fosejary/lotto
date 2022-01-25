@@ -220,7 +220,7 @@ public class MakeLotto {
 //        if (exFilter2()) return true; //낙수표 패턴 자리 제거
 //        if (!exFilter3()) return true;//40번대 2수 필출 필터
 
-//        if (exFilter1()) return true; //낙수표 제외 자릿수 필터임
+        if (exFilter1()) return true; //낙수표 제외 자릿수 필터임
 //        if (exFilter4()) return true; //2,4,6,8 에서 6수 제외
 
         if (exFilter5()) return true; //세로줄 필터1
@@ -235,7 +235,7 @@ public class MakeLotto {
         if (exFilter18()) return true; //세로줄 필터10
         if (exFilter19()) return true; //세로줄 필터11
 
-        //if (exFilter20()) return true; //번호별 출현횟수 전회차 동일 구간 6수 제외
+//        if (exFilter20()) return true; //번호별 출현횟수 전회차 동일 구간 6수 제외
         //if (exFilter21()) return true; //번호별 출현횟수 전회차-1 동일 구간 6수 제외
         //if (exFilter33()) return true; //번호별 출현횟수 3회이상 중복회차에서 6수 출현 제거
         //if (exFilter34()) return true; //10주 이상 수에서 2수 이상 출현 제거
@@ -246,8 +246,8 @@ public class MakeLotto {
 //
         //if (exFilter36()) return true; //매직그룹 필터
 
-        //if (exFilter37()) return true; //해외로또수 1회출 번호 필터
-        //if (exFilter38()) return true; //해외로또수 2회출 번호 필터
+        if (exFilter37()) return true; //해외로또수 1회출 번호 필터
+        if (exFilter38()) return true; //해외로또수 4,5회출 번호 필터
         //if (exFilter39()) return true; //해외로또수 필출 구간 (벨기에, 스위스, 이스라엘)
 
         //if (exFilter40()) return true; //동형수 필터 (12/24, 13/31, 14/41, 23/32, 24/42, 34/43)
@@ -435,11 +435,7 @@ public class MakeLotto {
     private boolean exFilter1() {
         int checkCount = 0;
         int[] numbers = {
-                1, 2,
-                12, 13, 15, 16,
-                20, 24, 26,
-                32, 38,
-                41, 42, 43, 45
+                6, 7, 9, 11, 14, 17, 20, 21, 25, 27, 29, 38
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -448,7 +444,7 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 4;
+        return checkCount > 2;
     }
 
     private boolean exFilter2() {
@@ -1250,7 +1246,7 @@ public class MakeLotto {
     private boolean exFilter37() {
         int checkCount = 0;
         int[] numbers = {
-                3, 6, 14, 18, 21, 24, 28, 38, 39, 40, 41, 42, 43, 45
+                5, 12, 13, 17, 22, 24, 30, 34, 36, 39, 40, 41, 43, 44, 45
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1259,13 +1255,14 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 6;
+        return checkCount == 6 || checkCount == 0;
     }
 
     private boolean exFilter38() {
         int checkCount = 0;
         int[] numbers = {
-                1, 2, 4, 7, 10, 11, 17, 19, 20, 25, 30, 31, 34, 36, 44
+                1, 8, 19, 32, 38
+
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1274,7 +1271,7 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 6;
+        return checkCount > 3;
     }
 
     private boolean exFilter39() {
@@ -2135,7 +2132,7 @@ public class MakeLotto {
 
     private boolean failedCheck() {
         int[][] filters = {
-                {3, 4}, {1, 9}
+                {3, 4}, {1, 9}, {4, 24}, {24, 44}, {4, 44}
         };
         boolean result = false;
         for (int[] filter : filters) {
