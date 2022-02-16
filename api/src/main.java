@@ -30,7 +30,7 @@ public class main {
 //        arrList.remove(Integer.valueOf(3));
 //        arrList.remove(Integer.valueOf(4)); //보너스 끝수
 //        arrList.remove(Integer.valueOf(5));
-        arrList.remove(Integer.valueOf(6)); //4주 이내 2회 출현 //출현그룹표 약함
+//        arrList.remove(Integer.valueOf(6)); //4주 이내 2회 출현 //출현그룹표 약함
 //        arrList.remove(Integer.valueOf(7));
 //        arrList.remove(Integer.valueOf(8));
 //        arrList.remove(Integer.valueOf(9));
@@ -42,13 +42,13 @@ public class main {
 //        arrList.remove(Integer.valueOf(15));
 //        arrList.remove(Integer.valueOf(16));
 //        arrList.remove(Integer.valueOf(17));
-        arrList.remove(Integer.valueOf(18));
+//        arrList.remove(Integer.valueOf(18));
 //        arrList.remove(Integer.valueOf(19)); //10회차 직전 위치
 //        arrList.remove(Integer.valueOf(20));
 //        arrList.remove(Integer.valueOf(21));
 //        arrList.remove(Integer.valueOf(22));
 //        arrList.remove(Integer.valueOf(23));
-        arrList.remove(Integer.valueOf(24)); //보너스 끝수 //출현그룹표 약함
+//        arrList.remove(Integer.valueOf(24)); //보너스 끝수 //출현그룹표 약함
 //        arrList.remove(Integer.valueOf(25)); //10회차 직전 위치 //출현그룹표 약함
 //        arrList.remove(Integer.valueOf(26));
 //        arrList.remove(Integer.valueOf(27));
@@ -69,7 +69,7 @@ public class main {
 //        arrList.remove(Integer.valueOf(42));
 //        arrList.remove(Integer.valueOf(43)); //4주 이내 2회 출현
 //        arrList.remove(Integer.valueOf(44)); //보너스 끝수
-//        arrList.remove(Integer.valueOf(45));
+        arrList.remove(Integer.valueOf(45));
 
         System.out.println(arrList);
         boolean[] visited = new boolean[arrList.size()];
@@ -97,10 +97,10 @@ public class main {
         System.out.println("* 10회 미출수: " + lotto.getNoShowNumberSet());
         int count = 1;
         System.out.println("------------------------------");
-        for (ArrayList<Integer> result : resultList) {
-            System.out.println(count + ". -> " + result);
-            count++;
-        }
+//        for (ArrayList<Integer> result : resultList) {
+//            System.out.println(count + ". -> " + result);
+//            count++;
+//        }
 
         ArrayList<ArrayList<Integer>> mainRandomList = new ArrayList<>();
         Random ra = new Random();
@@ -111,7 +111,7 @@ public class main {
             resultList.remove(rv);
         }
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             System.out.println(mainRandomList.get(i) + " - (AC: " + calcArithmeticComplexCount(mainRandomList.get(i)) + ")");
         }
 

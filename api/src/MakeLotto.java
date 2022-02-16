@@ -3,18 +3,18 @@ import java.util.*;
 public class MakeLotto {
 
     private int[][] previousNumbersArr = {
+            {17, 25, 33, 35, 38, 45, 15},
+            {6, 10, 12, 14, 20, 42, 15},
+            {2, 8, 19, 22, 32, 42, 39},
             {1, 3, 9, 14, 18, 28, 34},
             {13, 17, 18, 20, 42, 45, 41},
             {4, 7, 14, 16, 24, 44, 20},
             {6, 11, 15, 24, 32, 39, 28},
             {1, 4, 13, 29, 38, 39, 7},
             {1, 3, 8, 24, 27, 35, 28},
-            {6, 14, 16, 18, 24, 42, 44},
-            {12, 20, 26, 33, 44, 45, 24},
-            {13, 18, 25, 31, 33, 44, 38},
-            {2, 4, 25, 26, 36, 37, 28}
+            {6, 14, 16, 18, 24, 42, 44}
     };
-    private int[] previousNumbers = {1, 3, 9, 14, 18, 28, 34};
+    private int[] previousNumbers = {17, 25, 33, 35, 38, 45, 15};
     private boolean useBonusNum = true;
     private ArrayList<Integer> numbers;
     private List<List<Integer>> lottoNumArr;
@@ -76,7 +76,7 @@ public class MakeLotto {
         if (startNumberFilter(13)) return true;
 
         //세로 라인중 해당하는 라인은 반드시 포함 시킴
-        if (checkBasicVerticalAxisLine(5)) return true;
+//        if (checkBasicVerticalAxisLine(5)) return true;
 
         //가로 라인중 해당하는 라인은 반드시 포함 시킴
         //if (checkBasicHorizontalAxisLine(3)) return true;
@@ -84,7 +84,7 @@ public class MakeLotto {
         //25를 중심으로 4개씩 사방의 숫자
         if (checkBlockFilter(1, 4)) return true;
         //패턴표 코너의 4수씩 4지점의 숫자
-        if (checkCornerFilter(1, 4)) return true;
+        if (checkCornerFilter(2, 5)) return true;
 
         //n회귀 당번 포함
 //        if (beforeNumberShow(6)) return true;
@@ -98,7 +98,7 @@ public class MakeLotto {
         if (naksuTableCheck(5)) return true;
 
         //낙수표 5주간에서 5개이상 번호가 나오는 경우
-        if (naksu5WeekNumberLimitFilter(3, 5)) return true;
+        if (naksu5WeekNumberLimitFilter(2, 5)) return true;
         //낙수표 6주 ~ 10주에서 5개이상 번호가 나오는 경우
         if (naksu6to10WeekNumberFilter()) return true;
 
@@ -108,7 +108,7 @@ public class MakeLotto {
         //3수 조합 불가 rdy
         if (checkCombinationNumbers()) return true;
         //4수 박스 모양 조합 불가
-        if (checkCombinationNumbers2()) return true;
+        //if (checkCombinationNumbers2()) return true;
 
         //로또9단 순위표 ABC 필터 조합 rdy
         if (checkGroupNumbers(0)) return true; //A그룹
@@ -129,30 +129,30 @@ public class MakeLotto {
 //        if (checkLastNumberRemoveReq(7)) return true;
 
         //AC값 필터 6 미만과 10 제외
-        if (calcArithmeticComplexCount(6, 10, false)) return true;
+        if (calcArithmeticComplexCount(7, 10, false)) return true;
 
         //3배수가 최소 1개 이하이거나, 최대 4개 이상인 경우 재추첨
-        if (check3MultipleNumber(1, 3)) return true;
+//        if (check3MultipleNumber(1, 3)) return true; //1미만, 3초과
 
         //마지막 볼 넘버가 35미만이면 재추첨
         if (checkLastNumberIsOverToNumber(35)) return true;
 
-        //  4. 직전회차 1등 이웃 수 포함, (이웃수가 4개이상 포함된 경우만 재추첨)
+//        //  4. 직전회차 1등 이웃 수 포함, (이웃수가 4개이상 포함된 경우만 재추첨)
         if (checkNeighborhoodNumber(useBonusNum)) return true;
 
         //  5. 총합이 min ~ max
-        if (!betweenMinMaxNum(120, 180)) return true;
+        if (!betweenMinMaxNum(120, 190)) return true;
 
         // 5-1. 끝수합이 min ~ max
         if (checkSumLastNumber(15, 38)) return true;
 
         //고정수
         ArrayList<Integer> fixNumbers = new ArrayList<>();
-        //fixNumbers.add(22);
+//        fixNumbers.add(5);
         if (checkFixNumbers(fixNumbers)) return true;
 
         // 8. 직전회차 1등 수 미포함 조합 제거 (이월수 없는 경우 재추첨)
-//        if (checkHasPreviousLottoNumber(true, true)) return true;
+        if (checkHasPreviousLottoNumber(true, true)) return true;
 
         //연번, 격번, 근번 필터
         //if (checkSequenceTotalFilter(true, true, true)) return true;
@@ -164,10 +164,10 @@ public class MakeLotto {
         if (checkHasEqualLastPositionNumber()) return true;
 
         //단번대 n개, 10번대 n개, 20번대 n개, 30번대 n개, 40번대 n개 이상 조합 제거
-        if (numberRangeCheck(3, 3, 3, 4, 2)) return true;
+        if (numberRangeCheck(3, 3, 4, 4, 3)) return true;
 
         //true지정하면, 해당 번호대는 반드시 출현
-        if (numberNoShowCheck(false, false, false, true, false)) return true;
+        if (numberNoShowCheck(true, false, false, true, false)) return true;
 
         //  10. 모든 구간 출현 조합 제거 (단번, 10,20,30,40번대 모두 포함되는 경우)
         if (checkAllLineNumber()) return true;
@@ -183,15 +183,15 @@ public class MakeLotto {
         exceptOddList.add(0); //홀:0 짝:6
         if (numberOddEvenCheck(exceptOddList)) return true;
 
-        //  26. 소수 미포함 조합 제거 [2,3,5,7,11,13,17,19,23,29,31,37,41,43]
-        if (checkMustHavePrimeNumber(3)) return true;
+//        //  26. 소수 미포함 조합 제거 [2,3,5,7,11,13,17,19,23,29,31,37,41,43]
+//        if (checkMustHavePrimeNumber(3)) return true;
 
         //  28. 세로 1라인 n개 이상 조합 제거 (예: 4 -> 세로 1라인에서 4개 이상의 번호가 조합된 경우 제거)
-        if (checkVerticalLine(1, 3)) return true;
+        if (checkVerticalLine(1, 4)) return true;
         //  29. 세로 2라인 n개 이상 조합 제거 (예: 4 -> 세로 2라인에서 4개 이상의 번호가 조합된 경우 제거)
-        if (checkVerticalLine(2, 3)) return true;
+        if (checkVerticalLine(2, 4)) return true;
         //  30. 세로 3라인 n개 이상 조합 제거 (예: 4 -> 세로 3라인에서 4개 이상의 번호가 조합된 경우 제거)
-        if (checkVerticalLine(3, 3)) return true;
+        if (checkVerticalLine(3, 4)) return true;
         //  31. 세로 4라인 n개 이상 조합 제거 (예: 4 -> 세로 4라인에서 4개 이상의 번호가 조합된 경우 제거)
         if (checkVerticalLine(4, 3)) return true;
         //  32. 세로 5라인 n개 이상 조합 제거 (예: 4 -> 세로 5라인에서 4개 이상의 번호가 조합된 경우 제거)
@@ -216,12 +216,13 @@ public class MakeLotto {
         //  41. 가로 7라인 n개 이상 조합 제거 (예: 4 -> 가로 7라인에서 4개 이상의 번호가 조합된 경우 제거)
         if (checkHorizonLine(7, 3)) return true;
 
-        /** 느낌대로 추가하는 필터 **/
-//        if (exFilter2()) return true; //낙수표 패턴 자리 제거
+//        /** 느낌대로 추가하는 필터 **/
+        if (exFilter2()) return true; //낙수표 패턴 자리 제거
 //        if (!exFilter3()) return true;//40번대 2수 필출 필터
 
-        if (exFilter1()) return true; //낙수표 제외 자릿수 필터임
-//        if (exFilter4()) return true; //2,4,6,8 에서 6수 제외
+        if (exFilter1()) return true; //낙수표 1~2차 5수 출 제외
+        if (exFilter4()) return true; //낙수표 2~3차 5수 출 제외
+        if (exFilter21()) return true; //낙수표 3~4 5수 출 제외
 
         if (exFilter5()) return true; //세로줄 필터1
         if (exFilter6()) return true; //세로줄 필터2
@@ -231,48 +232,47 @@ public class MakeLotto {
         if (exFilter12()) return true; //세로줄 필터6
         if (exFilter13()) return true; //세로줄 필터7
         if (exFilter14()) return true; //세로줄 필터8
-        if (exFilter17()) return true; //세로줄 필터9
-        if (exFilter18()) return true; //세로줄 필터10
-        if (exFilter19()) return true; //세로줄 필터11
+        if (exFilter17()) return true; //가로줄 2번째줄 필터
+        if (exFilter18()) return true; //좌3 필터 - 삭제 해도 됨 트라이앵글 필터와 중복
+        if (exFilter19()) return true; //우3 필터 - 삭제 해도 됨 트라이앵글 필터와 중복
 
-//        if (exFilter20()) return true; //번호별 출현횟수 전회차 동일 구간 6수 제외
-        //if (exFilter21()) return true; //번호별 출현횟수 전회차-1 동일 구간 6수 제외
-        //if (exFilter33()) return true; //번호별 출현횟수 3회이상 중복회차에서 6수 출현 제거
-        //if (exFilter34()) return true; //10주 이상 수에서 2수 이상 출현 제거
+//        if (exFilter20()) return true; //낙수표 동일 가로줄 1,3,4,6라인에서 6출 제외
 
-        //if (exFilter32()) return true; //합성수 제거
+        if (exFilter33()) return true; //4끝 필출
+        if (exFilter34()) return true; //번호대별 라인수 체크
 
-        //if (exFilter35()) return true; //단번대~20번대 5수 출현 제거
+//        if (exFilter32()) return true; //합성수 제거
+
+        if (exFilter35()) return true; //전 회차 동일 끝수 5수 이상 제외
+//        if (exFilter36()) return true; //30번대 2수 이상 출현
+
+//        if (exFilter37()) return true; //해외로또수 1회출 번호 필터
+//        if (exFilter38()) return true; //해외로또수 2회출 번호 필터
+        if (exFilter39()) return true; //출현횟수 미중복수 6수 출현 제거
 //
-        //if (exFilter36()) return true; //매직그룹 필터
-
-        if (exFilter37()) return true; //해외로또수 1회출 번호 필터
-        if (exFilter38()) return true; //해외로또수 4,5회출 번호 필터
-        //if (exFilter39()) return true; //해외로또수 필출 구간 (벨기에, 스위스, 이스라엘)
-
-        //if (exFilter40()) return true; //동형수 필터 (12/24, 13/31, 14/41, 23/32, 24/42, 34/43)
-//
-        //if (exFilter41()) return true; //1월의 기념일 및 추첨일 필터
-//        if (exFilter42()) return true; //과출현 번호 제거 필터
-        //if (exFilter43()) return true; //닥터존 제외수3개 만수르 필터 적용
+//        if (exFilter40()) return true; //출현그룹표 6주 제외
+//        if (exFilter41()) return true; //로또9단 필터
+//        if (exFilter42()) return true; //가로 1,2,3 라인 5수이상 제거
+//        if (exFilter43()) return true; //표준제외기법 6수 제거
         if (exFilter44()) return true; //쌍수 및 광땡수 필터
-
-        //if (exFilter45()) return true; //로메 제외수
-        //if (exFilter46()) return true; //6주~8주 필출 구간
-        //if (exFilter47()) return true; //필출 반창고 패턴 수
-        if (exFilter48()) return true; //0이나 1끝수 필출
-        //if (exFilter49()) return true; //8주 미출 반창고 패턴 수
-//        if (exFilter50()) return true; //낙수표 3주 출현위치 약한특징
-//        ArrayList<Integer> exlist = new ArrayList<>();
-//        exlist.add(4);
-//        exlist.add(7);
-//        exlist.add(14);
-//        exlist.add(16);
-//        exlist.add(24);
-//        exlist.add(44);
-//        if (exFilter51(exlist)) return true; //쌍수 및 광땡수 필터
-
-        if (number1PosFilter(2)) return true; //1끝
+//
+        if (exFilter45()) return true; //로메 10수 제외수
+        if (exFilter46()) return true; //로메 5수 제외수
+        if (exFilter47()) return true; //세로 1,2 라인 미출 제외
+//
+        if (exFilter48()) return true; //1,3끝수 필출
+//
+//        if (exFilter49()) return true; //콜드수 필터
+//        if (exFilter50()) return true; //핫수 필터
+//        if (exFilter51()) return true; //미지근수 필터
+        if (hotColdFilter(1, 3, 2)) return true;
+//
+        if (exFilter52()) return true; //벨기에 3수 출 제외
+//        if (exFilter53()) return true; //저고 저 필터
+//
+//        if (check4NumberFilter()) return true;
+//
+        if (number1PosFilter(3)) return true; //1끝
         if (number2PosFilter(2)) return true; //2끝
         if (number3PosFilter(2)) return true; //3끝
         if (number4PosFIlter(2)) return true; //4끝
@@ -280,11 +280,42 @@ public class MakeLotto {
         if (number6PosFilter(2)) return true; //6끝
         if (number7PosFilter(2)) return true; //7끝
         if (number8PosFilter(2)) return true; //8끝
-        if (number9PosFIlter(2)) return true; //9끝
+        if (number9PosFilter(2)) return true; //9끝
         if (number0PosFilter(2)) return true; //0끝
 
         return false;
 
+    }
+
+    private boolean check4NumberFilter() {
+        int[][] filters = {
+                {6, 10, 12, 14, 20, 42, 2, 8, 19, 22, 32},
+                {2, 8, 19, 22, 32, 1, 3, 9, 18, 28},
+                {1, 3, 9, 18, 28, 13, 17, 45},
+                {13, 17, 45, 4, 7, 16, 24, 44},
+                {4, 7, 16, 24, 44, 11, 15, 39},
+                {6, 2, 1, 13, 4, 10, 8, 3, 17, 7},
+                {10, 8, 3, 17, 7, 12, 19, 9, 45, 16},
+                {12, 19, 9, 45, 16, 14, 22, 18, 24},
+                {14, 22, 18, 24, 20, 32, 28, 44},
+                {11, 29, 27, 26, 15, 38, 35, 33, 39}
+        };
+        boolean result = false;
+        for (int[] filter : filters) {
+            int check = 0;
+            for (int aFilter : filter) {
+                for (int no : currentLottoArr) {
+                    if (no == aFilter) {
+                        check++;
+                    }
+                }
+            }
+            if (check == 4) {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     private boolean checkSequenceFilter() {
@@ -435,7 +466,12 @@ public class MakeLotto {
     private boolean exFilter1() {
         int checkCount = 0;
         int[] numbers = {
-                6, 7, 9, 11, 14, 17, 20, 21, 25, 27, 29, 38
+                17, 6,
+                25, 10,
+                33, 12,
+                35, 14,
+                38, 20,
+                45, 42
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -444,28 +480,25 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 2;
+        return checkCount > 4;
     }
 
     private boolean exFilter2() {
-        int[][] numbers = {
-                {2, 9, 3, 5, 1, 6, 11, 10, 12, 13, 17, 16, 29, 14, 37, 18, 28, 40, 24, 38, 21, 36, 45, 39, 26},//3
-                {25, 34, 43, 19, 23, 42, 31},//1
-                {20, 30, 15, 35, 4, 33, 32, 41},//0
-                {7, 22, 27}//1
+        int checkCount = 0;
+        int[] numbers = {
+                13, 4, 27, 26, 30,
+                3, 15,
+                19, 9,
+                14, 45
         };
-
-        int[] checkCounts = new int[4];
         for (int no : currentLottoArr) {
-            for (int i = 0; i < numbers.length; i++) {
-                for (int j = 0; j < numbers[i].length; j++) {
-                    if (no == numbers[i][j]) {
-                        checkCounts[i]++;
-                    }
+            for (int a : numbers) {
+                if (no == a) {
+                    checkCount++;
                 }
             }
         }
-        return (checkCounts[0] == 3 && checkCounts[1] == 1 && checkCounts[2] == 0 && checkCounts[3] == 1);
+        return checkCount > 3;
     }
 
     private boolean exFilter3() {
@@ -486,10 +519,12 @@ public class MakeLotto {
     private boolean exFilter4() {
         int checkCount = 0;
         int[] numbers = {
-                2, 12, 22, 32, 42,
-                4, 14, 24, 34, 44,
-                6, 16, 26, 36,
-                8, 18, 28, 38
+                6, 2,
+                10, 8,
+                12, 19,
+                14, 22,
+                20, 32,
+                42
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -498,13 +533,13 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 5;
+        return checkCount > 4;
     }
 
     private boolean exFilter5() {
         int checkCount = 0;
         int[] numbers = {
-                1, 3, 9, 14, 18, 28
+                17, 25, 33, 35, 38, 45
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -519,7 +554,7 @@ public class MakeLotto {
     private boolean exFilter6() {
         int checkCount = 0;
         int[] numbers = {
-                13, 17, 20, 42, 45
+                6, 10, 12, 14, 20, 42
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -528,13 +563,13 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 1;
+        return checkCount > 2;
     }
 
     private boolean exFilter7() {
         int checkCount = 0;
         int[] numbers = {
-                4, 7, 16, 24, 44
+                2, 8, 19, 22, 32
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -583,7 +618,7 @@ public class MakeLotto {
     private boolean exFilter9() {
         int checkCount = 0;
         int[] numbers = {
-                6, 11, 15, 32, 39
+                1, 3, 9, 18, 28
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -626,7 +661,7 @@ public class MakeLotto {
     private boolean exFilter11() {
         int checkCount = 0;
         int[] numbers = {
-                29, 38
+                4, 7, 16, 24, 44
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -635,13 +670,13 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 1;
+        return checkCount > 2;
     }
 
     private boolean exFilter12() {
         int checkCount = 0;
         int[] numbers = {
-                8, 27, 35
+                11, 15, 39
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -650,13 +685,13 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 1;
+        return checkCount > 2;
     }
 
     private boolean exFilter13() {
         int checkCount = 0;
         int[] numbers = {
-                12, 26, 33
+                36, 37
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -671,7 +706,7 @@ public class MakeLotto {
     private boolean exFilter14() {
         int checkCount = 0;
         int[] numbers = {
-                25, 31
+                30, 41
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -920,7 +955,7 @@ public class MakeLotto {
     private boolean exFilter17() {
         int checkCount = 0;
         int[] numbers = {
-                2, 36, 37
+                25, 10, 8, 3, 7, 15, 37, 41
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -929,13 +964,18 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 2;
+        return checkCount > 3;
     }
 
     private boolean exFilter18() {
         int checkCount = 0;
         int[] numbers = {
-                30, 41
+                17, 2, 1, 29, 31, 36, 30, 23, 43,
+                10, 8, 3, 15, 37,
+                9, 16,
+                22, 24,
+                38, 44,
+                45
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -944,15 +984,18 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 2;
+        return checkCount > 4;
     }
 
     private boolean exFilter19() {
         int checkCount = 0;
         int[] numbers = {
-                2, 21, 30, 23, 10, 34, 43, 5, 22, 40, 19,
-                36, 41,
-                37
+                6, 13, 27, 26, 21, 34, 5, 40,
+                7, 41,
+                33, 12, 19,
+                35, 14,
+                20, 28,
+                42
 
         };
         for (int no : currentLottoArr) {
@@ -962,17 +1005,16 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 0 || checkCount > 3;
+        return checkCount > 4;
     }
 
     private boolean exFilter20() {
         int checkCount = 0;
         int[] numbers = {
-                4, 10, 20,
-                7, 19, 26,
-                14, 16,
-                2, 21, 24, 31,
-                11, 15, 36, 44
+                6, 2, 1, 13, 4, 11, 29, 27, 26, 25, 36, 21, 30, 23, 34, 43, 5, 40,
+                12, 19, 9, 45, 16, 39,
+                14, 22, 18, 24,
+                42
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -987,12 +1029,11 @@ public class MakeLotto {
     private boolean exFilter21() {
         int checkCount = 0;
         int[] numbers = {
-                45,
-                16,
-                33, 37,
-                5, 8, 42,
-                11, 15, 36, 44,
-                3
+                2, 1,
+                8, 3,
+                19, 9,
+                22, 18,
+                32, 28
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1001,7 +1042,7 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 5;
+        return checkCount > 4;
     }
 
     private boolean number1PosFilter(int limit) {
@@ -1125,7 +1166,7 @@ public class MakeLotto {
         return checkCount > limit;
     }
 
-    private boolean number9PosFIlter(int limit) {
+    private boolean number9PosFilter(int limit) {
         int checkCount = 0;
         int[] numbers = {
                 9, 19, 29, 39
@@ -1167,19 +1208,84 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 3;
+        return checkCount == 3 || checkCount > 3;
     }
 
     private boolean exFilter33() {
         int checkCount = 0;
         int[] numbers = {
-                2, 21, 24, 31,
-                11, 15, 36, 44,
-                7, 19, 26, 38,
-                5, 8, 42,
-                18, 27, 43,
-                1, 12, 40,
-                4, 10, 20
+                4, 14, 24, 34, 44
+        };
+        for (int no : currentLottoArr) {
+            for (int a : numbers) {
+                if (no == a) {
+                    checkCount++;
+                }
+            }
+        }
+        return checkCount == 0 || checkCount > 2;
+    }
+
+    private boolean exFilter34() {
+        int checkCount = 0;
+        int[] numbers = {
+                6, 10,
+                2, 8,
+                1, 3, 9,
+                4, 7,
+                12, 14, 20,
+                11, 15,
+                33, 35, 38,
+                36, 37
+        };
+        for (int no : currentLottoArr) {
+            for (int a : numbers) {
+                if (no == a) {
+                    checkCount++;
+                }
+            }
+        }
+        return checkCount > 4 || checkCount == 0;
+    }
+
+    private boolean exFilter35() {
+        int checkCount = 0;
+        int[] numbers = {
+                3, 13, 23, 33, 43,
+                5, 15, 25, 35, 45,
+                7, 17, 27, 37,
+                8, 18, 28, 38
+        };
+        for (int no : currentLottoArr) {
+            for (int a : numbers) {
+                if (no == a) {
+                    checkCount++;
+                }
+            }
+        }
+        return checkCount > 4;
+    }
+
+    private boolean exFilter36() {
+        int checkCount = 0;
+        int[] numbers = {
+                31, 32, 33, 34, 35, 36, 37, 38, 39, 40
+        };
+
+        for (int no : currentLottoArr) {
+            for (int a : numbers) {
+                if (no == a) {
+                    checkCount++;
+                }
+            }
+        }
+        return checkCount < 1;
+    }
+
+    private boolean exFilter37() {
+        int checkCount = 0;
+        int[] numbers = {
+                2, 3, 4, 9, 16, 20, 22, 25, 26, 31, 34, 38, 45
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1191,78 +1297,10 @@ public class MakeLotto {
         return checkCount == 6;
     }
 
-    private boolean exFilter34() {
-        int checkCount = 0;
-        int[] numbers = {
-                30, 23, 10, 34, 43, 5, 9, 40, 19,
-                41, 28, 22
-        };
-        for (int no : currentLottoArr) {
-            for (int a : numbers) {
-                if (no == a) {
-                    checkCount++;
-                }
-            }
-        }
-        return checkCount > 2;
-    }
-
-    private boolean exFilter35() {
-        int checkCount = 0;
-        int[] numbers = {
-                1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                21, 22, 23, 24, 25, 26, 27, 28, 29, 30
-        };
-        for (int no : currentLottoArr) {
-            for (int a : numbers) {
-                if (no == a) {
-                    checkCount++;
-                }
-            }
-        }
-        return checkCount == 5;
-    }
-
-    private boolean exFilter36() {
-        int checkCount = 0;
-        int[] numbers = {
-                41, 42, 43,
-                34, 35, 36,
-                10, 11, 12, 31, 32, 33,
-                19, 20, 21, 43, 44, 45
-        };
-
-        for (int no : currentLottoArr) {
-            for (int a : numbers) {
-                if (no == a) {
-                    checkCount++;
-                }
-            }
-        }
-        return checkCount > 4 || checkCount == 0;
-    }
-
-    private boolean exFilter37() {
-        int checkCount = 0;
-        int[] numbers = {
-                5, 12, 13, 17, 22, 24, 30, 34, 36, 39, 40, 41, 43, 44, 45
-        };
-        for (int no : currentLottoArr) {
-            for (int a : numbers) {
-                if (no == a) {
-                    checkCount++;
-                }
-            }
-        }
-        return checkCount == 6 || checkCount == 0;
-    }
-
     private boolean exFilter38() {
         int checkCount = 0;
         int[] numbers = {
-                1, 8, 19, 32, 38
-
+                5, 6, 8, 10, 13, 14, 17, 19, 23, 28, 30, 33, 37, 39, 41
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1271,13 +1309,13 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 3;
+        return checkCount == 6;
     }
 
     private boolean exFilter39() {
         int checkCount = 0;
         int[] numbers = {
-                4, 6, 11, 12, 13, 19, 25, 27, 31, 34, 35, 38, 39, 40, 43, 44, 45
+                2, 4, 5, 6, 9, 18, 23, 25, 28, 29, 30, 34, 35, 39, 40, 41
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1286,13 +1324,36 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 0;
+        return checkCount > 4;
     }
 
     private boolean exFilter40() {
         int checkCount = 0;
         int[] numbers = {
-                12, 24, 13, 31, 14, 41, 23, 32, 24, 42, 34, 43
+                17, 39, 1, 12, 14, 44, 19, 42, 7, 26, 4, 45, 2, 21, 24, 38, 8, 16, 5, 25
+        };
+        for (int no : currentLottoArr) {
+            for (int a : numbers) {
+                if (no == a) {
+                    checkCount++;
+                }
+            }
+        }
+        return checkCount == 6;
+    }
+
+    private boolean exFilter41() {
+        if ((currentLottoArr.get(0) % 2) == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean exFilter42() {
+        int checkCount = 0;
+        int[] numbers = {
+                10, 8, 3, 17, 7, 15, 38, 35, 33
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1304,40 +1365,14 @@ public class MakeLotto {
         return checkCount == 0 || checkCount > 3;
     }
 
-    private boolean exFilter41() {
-        int checkCount = 0;
-        int[] numbers = {
-                1, 5, 8, 15, 20, 22, 29, 31
-        };
-        for (int no : currentLottoArr) {
-            for (int a : numbers) {
-                if (no == a) {
-                    checkCount++;
-                }
-            }
-        }
-        return checkCount == 0;
-    }
-
-    private boolean exFilter42() {
-        int checkCount = 0;
-        int[] numbers = {
-                1, 2, 6, 13, 24, 37, 39
-        };
-        for (int no : currentLottoArr) {
-            for (int a : numbers) {
-                if (no == a) {
-                    checkCount++;
-                }
-            }
-        }
-        return checkCount > 1;
-    }
-
     private boolean exFilter43() {
         int checkCount = 0;
         int[] numbers = {
-                12, 20, 41
+                14, 18, 20, 42,
+                5, 6, 22,
+                9,
+                12, 38,
+                15, 25, 35, 45
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1346,15 +1381,14 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 1;
+        return checkCount > 4;
     }
 
     private boolean exFilter44() {
         int checkCount = 0;
         int[] numbers = {
                 11, 22, 33, 44,
-                //13, 18,
-                31, 38
+                13, 18, 31, 38
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1363,13 +1397,13 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 0;
+        return checkCount == 0 || checkCount > 4;
     }
 
     private boolean exFilter45() {
         int checkCount = 0;
         int[] numbers = {
-                4, 7, 11, 15, 16, 20, 24, 32, 39, 44
+                9, 15, 18, 21, 25, 35, 38, 39, 40, 45
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1378,13 +1412,13 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 1;
+        return checkCount > 3;
     }
 
     private boolean exFilter46() {
         int checkCount = 0;
         int[] numbers = {
-                12, 20, 25, 31, 2, 36
+                9, 18, 25, 35, 45
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1393,21 +1427,19 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 0;
+        return checkCount > 2;
     }
 
     private boolean exFilter47() {
         int checkCount = 0;
         int[] numbers = {
-                10, 17,
-                30, 37,
-                2, 10,
-                22, 30,
-                17, 23,
-                20, 21,
-                30, 31,
-                40, 41,
-                37, 43
+                1, 2,
+                8, 9,
+                15, 16,
+                22, 23,
+                29, 30,
+                36, 37,
+                43, 44
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1416,14 +1448,13 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 0;
+        return checkCount == 0 || checkCount > 4;
     }
 
     private boolean exFilter48() {
         int checkCount = 0;
         int[] numbers = {
-                2, 12, 22, 32, 42,
-                10, 20, 30, 40
+                1, 11, 21, 31, 41
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1438,8 +1469,7 @@ public class MakeLotto {
     private boolean exFilter49() {
         int checkCount = 0;
         int[] numbers = {
-                30, 37, 34, 41,
-                22, 23, 29, 30, 36, 37
+                5, 21, 23, 25, 30, 31, 34, 36, 37, 40, 41, 43
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1448,17 +1478,78 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 0;
+        return checkCount > 4;
     }
 
     private boolean exFilter50() {
         int checkCount = 0;
         int[] numbers = {
-                4, 16, 44,
-                11, 15,
-                1, 3, 8,
-                42, 26,
-                37, 17
+                1, 2, 3, 4, 6, 7, 8, 9, 10, 12, 13, 14, 16,
+                17, 18, 19, 20, 22, 24, 28, 32, 42, 44, 45
+        };
+        for (int no : currentLottoArr) {
+            for (int a : numbers) {
+                if (no == a) {
+                    checkCount++;
+                }
+            }
+        }
+        return checkCount > 4;
+    }
+
+    private boolean exFilter51() {
+        int checkCount = 0;
+        int[] numbers = {
+                11, 15, 26, 27, 29, 33, 35, 38, 39
+        };
+        for (int no : currentLottoArr) {
+            for (int a : numbers) {
+                if (no == a) {
+                    checkCount++;
+                }
+            }
+        }
+        return checkCount > 3;
+    }
+
+    private boolean hotColdFilter(int coldCnt, int midCnt, int hotCnt) {
+        int checkCold = 0;
+        int checkHot = 0;
+        int checkMid = 0;
+        int[][] numbers = {
+                {5, 21, 23, 26, 30, 31, 34, 36, 37, 40, 41, 43}, //cold
+                {1, 2, 3, 6, 8, 9, 10, 12, 13, 14, 17, 18, 19, 20, 22, 25, 28, 32, 33, 35, 38, 42, 45}, //hot
+                {4, 7, 11, 15, 16, 24, 27, 29, 39, 44} //mid
+        };
+        for (int no : currentLottoArr) {
+            for (int cold : numbers[0]) {
+                if (no == cold) {
+                    checkCold++;
+                }
+            }
+            for (int hot : numbers[1]) {
+                if (no == hot) {
+                    checkHot++;
+                }
+            }
+            for (int mid : numbers[2]) {
+                if (no == mid) {
+                    checkMid++;
+                }
+            }
+        }
+
+        if ((coldCnt == checkCold) && (midCnt == checkMid) && (hotCnt == checkHot)) {
+            return true;
+        } else {
+            return (checkCold == 6) || (checkMid == 6) || (checkHot == 6);
+        }
+    }
+
+    private boolean exFilter52() {
+        int checkCount = 0;
+        int[] numbers = {
+                2, 3, 19, 30, 37, 40
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -1470,34 +1561,21 @@ public class MakeLotto {
         return checkCount > 2;
     }
 
-    private boolean exFilter51(List<Integer> exceptOddList) {
+    private boolean exFilter53() {
         int checkCount = 0;
-        if ((currentLottoArr.get(0) % 2 == 0) == (exceptOddList.get(0) % 2 == 0)) {
-            checkCount++;
+        int[] numbers = {
+                23, 24, 25, 26, 27, 28, 29, 30,
+                31, 32, 33, 34, 35, 36, 37, 38,
+                39, 40, 41, 42, 43, 44, 45
+        };
+        for (int no : currentLottoArr) {
+            for (int a : numbers) {
+                if (no == a) {
+                    checkCount++;
+                }
+            }
         }
-        if ((currentLottoArr.get(1) % 2 == 0) == (exceptOddList.get(1) % 2 == 0)) {
-            checkCount++;
-        }
-        if ((currentLottoArr.get(2) % 2 == 0) == (exceptOddList.get(2) % 2 == 0)) {
-            checkCount++;
-        }
-        if ((currentLottoArr.get(3) % 2 == 0) == (exceptOddList.get(3) % 2 == 0)) {
-            checkCount++;
-        }
-        if ((currentLottoArr.get(4) % 2 == 0) == (exceptOddList.get(4) % 2 == 0)) {
-            checkCount++;
-        }
-        if ((currentLottoArr.get(5) % 2 == 0) == (exceptOddList.get(5) % 2 == 0)) {
-            checkCount++;
-        }
-
-        if (checkCount == 6) {
-            System.out.println(currentLottoArr);
-            System.out.println(checkCount);
-        }
-
-
-        return checkCount == 6;
+        return checkCount < 2;
     }
 
     private boolean lottoGiniFakeNumberFilter() {
@@ -1919,19 +1997,18 @@ public class MakeLotto {
                 {31, 32, 33}, {32, 33, 34}, {33, 34, 35}, {34, 35, 36}, {35, 36, 37}, {36, 37, 38}, {37, 38, 39}, {38, 39, 40}, {39, 40, 41}, {40, 41, 42},
                 {41, 42, 43}, {42, 43, 44}, {43, 44, 45},
                 //가로 3연속 불가
-                {1, 13, 4}, {13, 4, 6}, {4, 6, 29}, {6, 29, 8}, {12, 25, 2}, {25, 2, 21}, {2, 21, 30}, {21, 30, 23}, {30, 23, 10}, {23, 10, 34}, {34, 43, 5}, {43, 5, 22}, {5, 22, 40}, {22, 40, 19},
-                {3, 17, 7}, {17, 7, 11}, {7, 11, 38}, {11, 38, 27}, {26, 31, 36}, {9, 20, 16}, {20, 16, 15}, {35, 33, 37}, {14, 42, 24}, {42, 24, 32}, {18, 45, 44}, {45, 44, 39},
+                {17, 6, 2}, {6, 2, 1}, {2, 1, 13}, {1, 13, 4}, {13, 4, 11}, {4, 11, 29}, {11, 29, 27}, {29, 27, 26}, {27, 26, 31}, {26, 31, 36}, {36, 21, 30}, {21, 30, 23}, {23, 34, 43}, {34, 43, 5}, {43, 5, 40},
+                {25, 10, 8}, {10, 8, 3}, {8, 3, 7}, {3, 7, 15}, {7, 15, 37}, {15, 37, 41}, {33, 12, 19}, {12, 19, 9}, {19, 9, 16}, {9, 16, 39}, {35, 14, 22}, {14, 22, 18}, {22, 18, 24}, {38, 20, 32}, {20, 32, 28}, {32, 28, 44},
                 //세로 3연속 불가
-                {1, 3, 9}, {3, 9, 14}, {9, 14, 18}, {14, 18, 28}, {13, 17, 20}, {17, 20, 42}, {20, 42, 45}, {4, 7, 16}, {7, 16, 24}, {16, 24, 44}, {6, 11, 15}, {11, 15, 32}, {15, 32, 39},
-                {8, 27, 35}, {12, 26, 33}, {2, 36, 37},
+                {17, 25, 33}, {25, 33, 35}, {33, 35, 38}, {35, 38, 45}, {6, 10, 12}, {10, 12, 14}, {12, 14, 20}, {14, 20, 42}, {2, 8, 19}, {8, 19, 22}, {19, 22, 32},
+                {1, 3, 9}, {3, 9, 18}, {9, 18, 28}, {4, 7, 16}, {7, 16, 24}, {16, 24, 44}, {11, 15, 39},
                 //대각선
-                {1, 17, 16}, {13, 7, 15}, {6, 38, 35}, {12, 31, 37}, {3, 20, 24}, {17, 16, 32}, {9, 42, 44}, {20, 24, 39},
-                {2, 31, 33}, {8, 38, 15}, {29, 11, 16}, {6, 7, 20}, {4, 17, 9}, {38, 15, 24}, {11, 16, 42}, {7, 20, 14},
-                {15, 24, 45}, {16, 42, 18}, {24, 45, 28},
+                {17, 10, 19}, {6, 8, 9}, {13, 7, 39}, {25, 12, 22}, {10, 19, 18}, {33, 14, 32}, {12, 22, 28},
+                {29, 15, 16}, {13, 3, 19}, {1, 8, 12}, {2, 10, 33}, {3, 19, 14}, {8, 12, 35}, {9, 22, 20}, {19, 14, 38}, {18, 32, 42}, {22, 20, 45},
                 //ㄱ자 필터
-                {1, 13, 17}, {13, 4, 7}, {4, 6, 11}, {6, 29, 38}, {29, 8, 27}, {12, 25, 31}, {25, 2, 36}, {2, 30, 41},
-                {3, 17, 20}, {17, 7, 16}, {7, 11, 15}, {38, 27, 35}, {31, 36, 37}, {9, 20, 42}, {20, 16, 24}, {16, 15, 32},
-                {14, 42, 45}, {42, 24, 44}, {24, 32, 39}, {18, 45, 28}
+                {17, 6, 10}, {6, 2, 8}, {2, 1, 3}, {13, 4, 7}, {4, 11, 15}, {31, 36, 37}, {21, 30, 41}, {25, 10, 12}, {10, 8, 19}, {8, 3, 9}, {7, 15, 39},
+                {33, 12, 14}, {12, 19, 22}, {19, 9, 18}, {16, 39, 24}, {35, 14, 20}, {14, 22, 32}, {22, 18, 28},
+                {38, 20, 42}
         };
         boolean result = false;
         for (int[] filter : filters) {
@@ -1953,10 +2030,10 @@ public class MakeLotto {
 
     private boolean checkCombinationNumbers2() {
         int[][] filters = {
-                {1, 3, 13, 17}, {13, 17, 4, 7}, {4, 7, 6, 11}, {6, 11, 29, 38}, {29, 38, 8, 27}, {8, 27, 12, 26},
-                {12, 26, 25, 31}, {25, 31, 2, 36}, {2, 36, 30, 41}, {3, 9, 17, 20}, {17, 20, 7, 16}, {7, 16, 11, 15},
-                {11, 15, 27, 35}, {27, 35, 26, 33}, {26, 33, 36, 37}, {9, 14, 20, 42}, {20, 42, 16, 24}, {16, 24, 15, 32},
-                {14, 18, 42, 45}, {42, 45, 24, 44}, {24, 44, 32, 39}
+                {6, 10, 2, 8}, {2, 8, 1, 3}, {1, 3, 13, 17}, {13, 17, 4, 7}, {4, 7, 11, 15}, {11, 15, 29, 38}, {29, 38, 27, 35},
+                {27, 35, 26, 33}, {26, 33, 25, 31}, {25, 31, 36, 37}, {36, 37, 30, 41}, {10, 12, 8, 19}, {8, 19, 3, 9},
+                {3, 9, 17, 45}, {17, 45, 7, 16}, {7, 16, 15, 39}, {12, 14, 19, 22}, {19, 22, 9, 18}, {9, 18, 16, 24},
+                {14, 20, 22, 32}, {22, 32, 18, 28}, {18, 28, 24, 44}
         };
         boolean result = false;
         for (int[] filter : filters) {
@@ -2012,27 +2089,27 @@ public class MakeLotto {
         int[][] groups = {
                 {
                         34, 18, 27, 43, 13,
-                        39, 17, 1, 12, 40,
-                        14, 33, 20, 37, 10
+                        17, 39, 12, 1, 14,
+                        40, 20, 33, 37, 10
                 },//A
                 {
-                        4, 45, 31, 21, 24,
-                        2, 3, 15, 36, 44,
-                        11, 7, 26, 38, 19
+                        45, 4, 2, 21, 31,
+                        24, 3, 15, 36, 44,
+                        11, 19, 38, 42, 26
                 },//B
                 {
-                        42, 16, 8, 5, 25,
+                        7, 8, 16, 5, 25,
                         6, 35, 28, 41, 29,
                         23, 30, 32, 22, 9
                 },//C
-                {34, 18, 27, 43, 13, 4, 45, 31, 21, 24, 42, 16, 8, 5, 25}, //1
-                {39, 17, 1, 12, 40, 2, 3, 15, 36, 44, 6, 35, 28, 41, 29}, //2
-                {14, 33, 20, 37, 10, 11, 7, 26, 38, 19, 23, 30, 32, 22, 9}, //3
+                {34, 18, 27, 43, 13, 45, 4, 2, 21, 31, 7, 8, 16, 5, 25}, //1
+                {17, 39, 12, 1, 14, 24, 3, 15, 36, 44, 6, 35, 28, 41, 29}, //2
+                {40, 20, 33, 37, 10, 11, 19, 38, 42, 26, 23, 30, 32, 22, 9}, //3
                 {
                         34, 18, 27, 43, 13,
-                        39, 17, 1, 12, 40,
-                        14, 33, 20, 37, 10,
-                        42, 16, 8, 5, 25,
+                        17, 39, 12, 1, 14,
+                        40, 20, 33, 37, 10,
+                        7, 8, 16, 5, 25,
                         6, 35, 28, 41, 29,
                         23, 30, 32, 22, 9
                 }
@@ -2063,7 +2140,7 @@ public class MakeLotto {
             // 3 구간
             return checkCount > 4;
         } else {
-            return checkCount == 0 || checkCount == 6;
+            return checkCount == 0 || checkCount > 5;
             // A + C 그룹 끝
         }
     }
@@ -2113,12 +2190,13 @@ public class MakeLotto {
     private boolean naksuRedLineCheck() {
         int checkCount = 0;
         int[] numbers = {
-                29, 38,
-                8, 27, 35,
-                2, 36, 37,
-                21,
-                34,
-                40
+                13,
+                4, 7, 16, 24, 44,
+                26,
+                30, 41,
+                23,
+                43,
+                5
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -2132,7 +2210,12 @@ public class MakeLotto {
 
     private boolean failedCheck() {
         int[][] filters = {
-                {3, 4}, {1, 9}, {4, 24}, {24, 44}, {4, 44}
+                {25, 35}, {25, 45}, {35, 45}, {10, 20}, {12, 42}, {18, 28}, {1, 3}, {2, 4},
+                {17, 33}, {25, 35},
+                {17, 18}, {27, 28}, {7, 8},
+                {15, 16}, {5, 6},
+                {13, 14}, {23, 24}, {3, 4},
+                {26, 27}
         };
         boolean result = false;
         for (int[] filter : filters) {
@@ -2154,7 +2237,7 @@ public class MakeLotto {
 
     private boolean checkNaksuBeforeEqualPositionNumber() {
         int checkCount = 0;
-        int[] numbers = {6, 9, 20, 29};
+        int[] numbers = {3, 9, 15, 26};
         for (int no : currentLottoArr) {
             for (int a : numbers) {
                 if (no == a) {
@@ -2168,12 +2251,12 @@ public class MakeLotto {
     private boolean naksu5WeekNumberLimitFilter(int min, int max) {
         int checkCount = 0;
         int[] numbers = {
-                1, 13, 4, 6, 29,
-                3, 17, 7, 11, 38,
-                9, 20, 16, 15,
-                14, 42, 24, 32,
-                18, 45, 44, 39,
-                28
+                17, 6, 2, 1, 13,
+                25, 10, 8, 3,
+                33, 12, 19, 9,
+                35, 14, 22, 18,
+                38, 20, 32, 28,
+                45, 42
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -2188,9 +2271,11 @@ public class MakeLotto {
     private boolean naksu6to10WeekNumberFilter() {
         int checkCount = 0;
         int[] numbers = {
-                8, 12, 25, 2, 21, 30, 23, 10, 34, 43, 5, 22, 40, 19,
-                27, 26, 31, 36, 41,
-                35, 33, 37
+                4, 11, 29, 27, 26, 31, 36, 21, 30, 23, 34, 43, 5, 40,
+                7, 15, 37, 41,
+                16, 39,
+                24,
+                44
         };
         for (int no : currentLottoArr) {
             for (int a : numbers) {
@@ -2199,7 +2284,7 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount > 3;
+        return checkCount > 4;
     }
 
     private boolean lotto9DanFilter(int line) {
@@ -2387,18 +2472,18 @@ public class MakeLotto {
                 }
             }
         }
-        return checkCount == 0 || checkCount > 3;
+        return checkCount > 3 || checkCount == 0;
     }
 
     private boolean naksuTableCheck(int line) {
         int checkCount = 0;
         int[][] numbers = {
-                {1, 13, 4, 6, 29, 8, 12, 25, 2, 21, 30, 23, 10, 34, 43, 5, 22, 40, 19},
-                {3, 17, 7, 11, 38, 27, 26, 31, 36, 41},
-                {9, 20, 16, 15, 35, 33, 37},
-                {14, 42, 24, 32},
-                {18, 45, 44, 39},
-                {28}
+                {17, 6, 2, 1, 13, 4, 11, 29, 27, 26, 31, 36, 21, 30, 23, 34, 43, 5, 40},
+                {25, 10, 8, 3, 7, 15, 37, 41},
+                {33, 12, 19, 9, 16, 39},
+                {35, 14, 22, 18, 24},
+                {38, 20, 32, 28, 44},
+                {45, 42}
         };
         for (int no : currentLottoArr) {
             for (int n : numbers[line]) {
@@ -2408,9 +2493,9 @@ public class MakeLotto {
             }
         }
         if (line == 0) {
-            return checkCount > 3;
+            return checkCount > 4 || checkCount == 0;
         } else if (line == 1) {
-            return checkCount > 2;
+            return checkCount > 3;
         } else if (line == 2) {
             return checkCount > 3;
         } else if (line == 3) {
